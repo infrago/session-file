@@ -109,7 +109,7 @@ func (this *fileConnect) Read(id string) ([]byte, error) {
 }
 
 // 更新会话
-func (this *fileConnect) Write(id string, data []byte, expiry time.Duration) error {
+func (this *fileConnect) Write(id string, data []byte, expire time.Duration) error {
 	if this.db == nil {
 		return errInvalidCacheConnection
 	}
@@ -121,9 +121,9 @@ func (this *fileConnect) Write(id string, data []byte, expiry time.Duration) err
 
 	return this.db.Update(func(tx *buntdb.Tx) error {
 		opts := &buntdb.SetOptions{Expires: false}
-		if expiry > 0 {
+		if expire > 0 {
 			opts.Expires = true
-			opts.TTL = expiry
+			opts.TTL = expire
 		}
 		_, _, err := tx.Set(id, value, opts)
 		return err
